@@ -109,13 +109,13 @@
       const exchangeRateInput = document.getElementById('exchangeRate');
       const shippingCostInput = document.getElementById('shippingCost');
       const calculateBtn = document.getElementById('calculateBtn');
-      
-      // 当用户在汇率输入框手动输入时，设置手动覆盖标记
+
+      // 标记用户是否已手动输入汇率
       let manualOverride = false;
       exchangeRateInput.addEventListener('input', function() {
         manualOverride = true;
       });
-      
+
       // 调用 exchangerate.host 接口获取汇率
       function getExchangeRate(currencyFrom, currencyTo) {
         return fetch(https://api.exchangerate.host/latest?base=${currencyFrom})
@@ -123,49 +123,43 @@
           .then(data => data.rates[currencyTo] || null)
           .catch(() => null);
       }
-      
+
       async function updateExchangeRate() {
         const currencyFrom = document.getElementById('currencyFrom').value;
         const currencyTo = document.getElementById('currencyTo').value;
-        
-        // 如果已手动输入汇率，则不进行自动获取
+
+        // 如果用户手动输入过汇率，则不自动获取
         if (manualOverride) {
           calculateBtn.disabled = false;
           calculateBtn.textContent = '计算';
           return;
         }
-        
+
         calculateBtn.disabled = true;
         calculateBtn.textContent = '获取汇率中...';
-        
+
         try {
-          // 使用 Promise.race 实现 7 秒超时
+          // Promise.race 实现 7 秒超时
           const rate = await Promise.race([
             getExchangeRate(currencyFrom, currencyTo),
             new Promise((_, reject) =>
               setTimeout(() => reject(new Error('Timeout')), 7000)
             )
           ]);
-          // 若在获取过程中用户已手动输入，则保留手动值
           if (!manualOverride && rate) {
             exchangeRateInput.value = rate.toFixed(4);
-            localStorage.setItem('exchangeRate', rate.toFixed(4));
           } else if (!rate) {
             alert('无法获取汇率，请手动输入');
           }
         } catch (error) {
-          if (error.message === 'Timeout') {
-            alert('获取汇率超时，请手动输入汇率');
-          } else {
-            alert('无法获取汇率，请手动输入');
-          }
+          alert('获取汇率超时，请手动输入汇率');
         }
-        
+
         calculateBtn.disabled = false;
         calculateBtn.textContent = '计算';
       }
-      
-      // 当货币选项变化时，重置手动输入标记，并重新获取汇率
+
+      // 货币选择变化时，重置手动覆盖标记并重新获取汇率
       document.getElementById('currencyFrom').addEventListener('change', function() {
         manualOverride = false;
         updateExchangeRate();
@@ -174,40 +168,31 @@
         manualOverride = false;
         updateExchangeRate();
       });
-      
-      // 获取本地存储的汇率和运费
-      const savedExchangeRate = localStorage.getItem('exchangeRate');
-      const savedShippingCost = localStorage.getItem('shippingCost');
-      if (savedExchangeRate) exchangeRateInput.value = savedExchangeRate;
-      if (savedShippingCost) shippingCostInput.value = savedShippingCost;
-      
-      shippingCostInput.addEventListener('input', () => {
-        localStorage.setItem('shippingCost', shippingCostInput.value);
-      });
-      
+
+      // 计算按钮点击事件
       calculateBtn.addEventListener('click', function() {
         const cost = parseFloat(document.getElementById('cost').value);
         const exchangeRate = parseFloat(exchangeRateInput.value);
         const shippingCost = parseFloat(shippingCostInput.value);
         const quantityPerBox = parseFloat(document.getElementById('quantityPerBox').value);
-        
+
         if (isNaN(cost) || isNaN(exchangeRate) || isNaN(shippingCost) || isNaN(quantityPerBox)) {
           alert('请填写所有字段');
           return;
         }
-        
-        // 使用汇率输入框中的值计算结果
+
         const convertedCost = cost * exchangeRate;
         const shippingCostPerFish = shippingCost / quantityPerBox;
         const finalCost = convertedCost + shippingCostPerFish;
-        
+
         document.getElementById('result').innerHTML = `
           <p>鱼本钱（目标货币）: ${convertedCost.toFixed(2)}</p>
           <p>每只鱼的运输本钱: ${shippingCostPerFish.toFixed(2)}</p>
           <p><strong>最终本钱: ${finalCost.toFixed(2)}</strong></p>
         `;
       });
-      
+
+      // 页面加载时自动获取汇率
       updateExchangeRate();
     });
   </script>
