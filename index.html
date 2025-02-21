@@ -1,158 +1,215 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鱼本钱计算器</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .calculator {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
-        }
-        .calculator h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .calculator label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .calculator input, .calculator select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .calculator button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .calculator button:disabled {
-            background-color: #ccc;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鱼本钱计算器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .calculator {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    .calculator h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .calculator label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .calculator input, .calculator select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .calculator button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .calculator button:disabled {
+      background-color: #ccc;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="calculator">
-        <h1>鱼本钱计算器</h1>
-        <label for="currencyFrom">原始货币</label>
-        <select id="currencyFrom">
-            <option value="CNY">人民币（CNY）</option>
-            <option value="IDR">印尼盾（IDR）</option>
-            <option value="THB">泰铢（THB）</option>
-            <option value="MYR">马来西亚令吉（MYR）</option>
-            <option value="USD">美金（USD）</option>
-            <option value="VND">越南盾（VND）</option>
-        </select>
+  <div class="calculator">
+    <h1>鱼本钱计算器</h1>
+    <label for="currencyFrom">原始货币</label>
+    <select id="currencyFrom">
+      <option value="CNY">人民币（CNY）</option>
+      <option value="IDR">印尼盾（IDR）</option>
+      <option value="THB">泰铢（THB）</option>
+      <option value="MYR">马来西亚令吉（MYR）</option>
+      <option value="USD">美金（USD）</option>
+      <option value="VND">越南盾（VND）</option>
+    </select>
 
-        <label for="currencyTo">目标货币</label>
-        <select id="currencyTo">
-            <option value="CNY">人民币（CNY）</option>
-            <option value="IDR">印尼盾（IDR）</option>
-            <option value="THB">泰铢（THB）</option>
-            <option value="MYR">马来西亚令吉（MYR）</option>
-            <option value="USD">美金（USD）</option>
-            <option value="VND">越南盾（VND）</option>
-        </select>
+    <label for="currencyTo">目标货币</label>
+    <select id="currencyTo">
+      <option value="CNY">人民币（CNY）</option>
+      <option value="IDR">印尼盾（IDR）</option>
+      <option value="THB">泰铢（THB）</option>
+      <option value="MYR">马来西亚令吉（MYR）</option>
+      <option value="USD">美金（USD）</option>
+      <option value="VND">越南盾（VND）</option>
+    </select>
 
-        <label for="cost">鱼本钱（原始货币）</label>
-        <input type="number" id="cost" placeholder="输入鱼本钱">
+    <label for="cost">鱼本钱（原始货币）</label>
+    <input type="number" id="cost" placeholder="输入鱼本钱">
 
-        <label for="exchangeRate">汇率（原始货币兑目标货币）</label>
-        <input type="number" id="exchangeRate" placeholder="输入汇率">
+    <label for="exchangeRate">汇率（原始货币兑目标货币）</label>
+    <input type="number" id="exchangeRate" placeholder="自动获取，或手动输入">
 
-        <label for="shippingCost">每箱运费（目标货币）</label>
-        <input type="number" id="shippingCost" placeholder="输入每箱运费">
+    <label for="shippingCost">每箱运费（目标货币）</label>
+    <input type="number" id="shippingCost" placeholder="输入每箱运费">
 
-        <label for="quantityPerBox">1箱鱼的数量</label>
-        <input type="number" id="quantityPerBox" placeholder="输入每箱鱼的数量">
+    <label for="quantityPerBox">1箱鱼的数量</label>
+    <input type="number" id="quantityPerBox" placeholder="输入每箱鱼的数量">
 
-        <button id="calculateBtn">计算</button>
+    <button id="calculateBtn" disabled>获取汇率中...</button>
 
-        <div class="result" id="result"></div>
-    </div>
+    <div class="result" id="result"></div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const exchangeRateInput = document.getElementById('exchangeRate');
-            const shippingCostInput = document.getElementById('shippingCost');
-
-            // 从本地存储中获取汇率和运费
-            const savedExchangeRate = localStorage.getItem('exchangeRate');
-            const savedShippingCost = localStorage.getItem('shippingCost');
-
-            if (savedExchangeRate) {
-                exchangeRateInput.value = savedExchangeRate;
-            }
-
-            if (savedShippingCost) {
-                shippingCostInput.value = savedShippingCost;
-            }
-
-            // 监听汇率和运费输入框的变化，保存到本地存储
-            exchangeRateInput.addEventListener('input', function() {
-                localStorage.setItem('exchangeRate', exchangeRateInput.value);
-            });
-
-            shippingCostInput.addEventListener('input', function() {
-                localStorage.setItem('shippingCost', shippingCostInput.value);
-            });
-
-            document.getElementById('calculateBtn').addEventListener('click', function() {
-                const currencyFrom = document.getElementById('currencyFrom').value;
-                const currencyTo = document.getElementById('currencyTo').value;
-                const cost = parseFloat(document.getElementById('cost').value);
-                const exchangeRate = parseFloat(exchangeRateInput.value);
-                const shippingCost = parseFloat(shippingCostInput.value);
-                const quantityPerBox = parseFloat(document.getElementById('quantityPerBox').value);
-
-                if (isNaN(cost) || isNaN(exchangeRate) || isNaN(shippingCost) || isNaN(quantityPerBox)) {
-                    alert('请填写所有字段');
-                    return;
-                }
-
-                // 计算鱼本钱（目标货币）
-                const convertedCost = cost * exchangeRate;
-
-                // 计算平均每只鱼的运输本钱
-                const shippingCostPerFish = shippingCost / quantityPerBox;
-
-                // 计算最终本钱
-                const finalCost = convertedCost + shippingCostPerFish;
-
-                // 显示结果
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `
-                    鱼本钱（${currencyTo}）: ${convertedCost.toFixed(2
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const exchangeRateInput = document.getElementById('exchangeRate');
+      const shippingCostInput = document.getElementById('shippingCost');
+      const calculateBtn = document.getElementById('calculateBtn');
+      
+      // 当用户在汇率输入框手动输入时，设置手动覆盖标记
+      let manualOverride = false;
+      exchangeRateInput.addEventListener('input', function() {
+        manualOverride = true;
+      });
+      
+      // 调用 exchangerate.host 接口获取汇率
+      function getExchangeRate(currencyFrom, currencyTo) {
+        return fetch(https://api.exchangerate.host/latest?base=${currencyFrom})
+          .then(response => response.json())
+          .then(data => data.rates[currencyTo] || null)
+          .catch(() => null);
+      }
+      
+      async function updateExchangeRate() {
+        const currencyFrom = document.getElementById('currencyFrom').value;
+        const currencyTo = document.getElementById('currencyTo').value;
+        
+        // 如果已手动输入汇率，则不进行自动获取
+        if (manualOverride) {
+          calculateBtn.disabled = false;
+          calculateBtn.textContent = '计算';
+          return;
+        }
+        
+        calculateBtn.disabled = true;
+        calculateBtn.textContent = '获取汇率中...';
+        
+        try {
+          // 使用 Promise.race 实现 7 秒超时
+          const rate = await Promise.race([
+            getExchangeRate(currencyFrom, currencyTo),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('Timeout')), 7000)
+            )
+          ]);
+          // 若在获取过程中用户已手动输入，则保留手动值
+          if (!manualOverride && rate) {
+            exchangeRateInput.value = rate.toFixed(4);
+            localStorage.setItem('exchangeRate', rate.toFixed(4));
+          } else if (!rate) {
+            alert('无法获取汇率，请手动输入');
+          }
+        } catch (error) {
+          if (error.message === 'Timeout') {
+            alert('获取汇率超时，请手动输入汇率');
+          } else {
+            alert('无法获取汇率，请手动输入');
+          }
+        }
+        
+        calculateBtn.disabled = false;
+        calculateBtn.textContent = '计算';
+      }
+      
+      // 当货币选项变化时，重置手动输入标记，并重新获取汇率
+      document.getElementById('currencyFrom').addEventListener('change', function() {
+        manualOverride = false;
+        updateExchangeRate();
+      });
+      document.getElementById('currencyTo').addEventListener('change', function() {
+        manualOverride = false;
+        updateExchangeRate();
+      });
+      
+      // 获取本地存储的汇率和运费
+      const savedExchangeRate = localStorage.getItem('exchangeRate');
+      const savedShippingCost = localStorage.getItem('shippingCost');
+      if (savedExchangeRate) exchangeRateInput.value = savedExchangeRate;
+      if (savedShippingCost) shippingCostInput.value = savedShippingCost;
+      
+      shippingCostInput.addEventListener('input', () => {
+        localStorage.setItem('shippingCost', shippingCostInput.value);
+      });
+      
+      calculateBtn.addEventListener('click', function() {
+        const cost = parseFloat(document.getElementById('cost').value);
+        const exchangeRate = parseFloat(exchangeRateInput.value);
+        const shippingCost = parseFloat(shippingCostInput.value);
+        const quantityPerBox = parseFloat(document.getElementById('quantityPerBox').value);
+        
+        if (isNaN(cost) || isNaN(exchangeRate) || isNaN(shippingCost) || isNaN(quantityPerBox)) {
+          alert('请填写所有字段');
+          return;
+        }
+        
+        // 使用汇率输入框中的值计算结果
+        const convertedCost = cost * exchangeRate;
+        const shippingCostPerFish = shippingCost / quantityPerBox;
+        const finalCost = convertedCost + shippingCostPerFish;
+        
+        document.getElementById('result').innerHTML = `
+          <p>鱼本钱（目标货币）: ${convertedCost.toFixed(2)}</p>
+          <p>每只鱼的运输本钱: ${shippingCostPerFish.toFixed(2)}</p>
+          <p><strong>最终本钱: ${finalCost.toFixed(2)}</strong></p>
+        `;
+      });
+      
+      updateExchangeRate();
+    });
+  </script>
+</body>
+</html>
